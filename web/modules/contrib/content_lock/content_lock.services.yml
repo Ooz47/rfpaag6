@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+  content_lock:
+    class: Drupal\content_lock\ContentLock\ContentLock
+  Drupal\content_lock\ContentLock\ContentLockInterface: '@content_lock'
+  Drupal\content_lock\EventSubscriber\SettingsSaveEventSubscriber: ~
+  Drupal\content_lock\Access\ContentLockViewsAccess:
+    tags:
+      - { name: access_check, applies_to: _content_lock_enabled_access_checker }

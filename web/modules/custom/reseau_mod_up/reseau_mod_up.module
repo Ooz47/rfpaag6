@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ * Contains reseau_mod_up.module.
+ */
+
+
+// /**
+//  * Implements hook_entity_type_alter().
+//  *
+//  * @param array $entity_types
+//  */
+// function reseau_mod_up_entity_type_alter(array &$entity_types)
+// {
+//   // Add validation constraint to the node entity
+//   if (isset($entity_types['node'])) {
+//     $entity_types['node']->addConstraint('AtLeastOneFormationIdentifier');
+
+//     // dsm($entity_types['node']);
+//   }
+// }
+
+
+function reseau_mod_up_page_attachments_alter(array &$attachments)
+{
+
+//   /*ajoute css admin*/
+//   $admin_theme = \Drupal::config('system.theme')->get('admin');
+//   $admin_theme_name = \Drupal::service('theme_handler')->getName($admin_theme);
+//   if ($admin_theme_name == 'Seven') {
+//     $attachments['#attached']['library'][] = 'reseau_mod_up/extra.admin';
+//   }
+
+$attachments['#attached']['library'][] = 'reseau_mod_up/extra.adminreseauup';
+
+}
+
+function reseau_mod_up_preprocess_html(&$variables)
+{
+
+    foreach ($variables['user']->getRoles() as $role) {
+        $variables['attributes']['class'][] = 'role-' . $role;
+      }
+}
+
+function reseau_mod_up_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability)
+{
+  $current_user = \Drupal::entityTypeManager()->getStorage('user')->load(\Drupal::currentUser()->id());
+
+  if (($current_user->hasRole('administrator')) || ($current_user->id() == '1')) {
+    //juste pour tester fonctionnement, à effacer/commenter en prod
+    // $current_user = \Drupal::entityTypeManager()->getStorage('user')->load(37);
+    return;
+  }
+
+
+
+    /*retire onglet Révision pour media*/
+    if (($route_name == 'entity.media.canonical' || $route_name == 'entity.media.delete_form')  && isset($data['tabs'][0])) {
+      // Remove all tabs from user login form.
+      foreach ($data['tabs'][0] as $key => $tab) {
+        if ($tab['#link']['title'] == "Révisions") {
+
+          $data['tabs'][0][$key]['#access'] = FALSE;
+        }
+      }
+    }
+}
+
+
+
+/* Modifie lien operation sur terme taxonomy*/
+function reseau_mod_up_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity)
+{
+  $current_user = \Drupal::currentUser();
+  // Kint($entity->getEntityTypeId());
+  // Kint($operations);
+  // On cible tous les utilisateurs sauf admion
+  if (in_array('administrator', $current_user->getRoles())) {
+    return;
+  }
+
+  if ($entity->getEntityTypeId() == 'taxonomy_term') {
+
+      unset($operations['add-child']);
+    
+  }
+  if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
+      unset($operations['manage-permissions']);
+  }
+
+
+}

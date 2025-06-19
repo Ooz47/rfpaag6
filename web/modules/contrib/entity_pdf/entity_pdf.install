@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Entity PDF Module Install file.
+ */
+
+/**
+ * Install default config.
+ */
+function entity_pdf_update_8001() {
+  \Drupal::configFactory()->getEditable('entity_pdf.settings')
+    ->set('filename', '[node:nid].pdf')
+    ->save();
+}
+
+/**
+ * Add default config for tempDir.
+ */
+function entity_pdf_update_8002() {
+  \Drupal::configFactory()->getEditable('entity_pdf.settings')
+    ->set('tempDir', 'sites/default/files/entity_pdf')
+    ->save();
+}
+
+/**
+ * Add default config for openInBrowser.
+ */
+function entity_pdf_update_8003() {
+  \Drupal::configFactory()->getEditable('entity_pdf.settings')
+    ->set('openInBrowser', FALSE)
+    ->save();
+}
+
+/**
+ * Initialize default rendering engine.
+ */
+function entity_pdf_update_8010() {
+  $config = \Drupal::configFactory()->getEditable('entity_pdf.settings');
+  if (!$config->get('renderingEngine')) {
+    $config->set('renderingEngine', 'entity_pdf_engine_mpdf')
+      ->save();
+  }
+}

@@ -1,0 +1,36 @@
+extra.admin:
+  css:
+    theme:
+      css/admin.css: {}
+
+webmaster:
+  js:
+    js/webmaster.js: {}
+  css:
+    theme:
+      css/webmaster.css: {}
+  dependencies:
+    - core/drupal
+
+media_viewmode_filter:
+  js:
+    js/media-viewmode-filter.js: {}
+
+ckeditor_single_style:
+  js:
+    js/ckeditor-single-style.js: {}
+
+recherche:
+  js:
+    js/recherche.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+
+searchfaq:
+  js:
+    js/searchfaq.js: {}
+
+autocomplete:
+  js:
+    js/autocomplete.js: {}
