@@ -17,6 +17,21 @@
               }
             });
           });
+
+              once('force-redirect-on-link', context.querySelectorAll('td.views-field-webform-submission-value-2 a'))
+          .forEach(function (el) {
+            el.addEventListener('mousedown', function (e) {
+              if (e.button !== 0) {
+                // Ignorer clic du milieu ou droit
+                return;
+              }
+              e.preventDefault(); // Empêche le focus auto et scroll vers le haut
+              const href = el.getAttribute('href');
+              if (href) {
+                window.location.href = href;
+              }
+            });
+          });
       }
     };
   

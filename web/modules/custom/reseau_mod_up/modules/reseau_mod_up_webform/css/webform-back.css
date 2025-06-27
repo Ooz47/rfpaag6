@@ -35,3 +35,25 @@
 .conteneur-retour {
     display:flex;
 }
+
+.view-copie-de-soumissions-de-webform .view-content table,
+.view-soumissions-webform-dir .view-content table
+ {
+    font-size: 13px;
+}
+
+.view-copie-de-soumissions-de-webform .view-content table thead th,
+.view-soumissions-webform-dir .view-content table thead th {
+min-width: 120px;
+}
+
+.view-copie-de-soumissions-de-webform .view-content table thead th#view-serial-table-column,
+.view-soumissions-webform-dir .view-content table thead th#view-serial-table-column {
+min-width: 90px;
+}
+
+td.views-field-operations .dropbutton-wrapper.open {
+  position: absolute;
+  min-width: 170px;
+  z-index: 10;
+}
